@@ -11,20 +11,17 @@ from md2bibtex import md2bibtex
 from md2bibtex import cli
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
+@pytest.mark.parametrize('md_link, link_tuple', [
+    ('[Name of link](http://www.example.test)', (u'Name of link', u'http://www.example.test')),
+])
+def test_basic_extraction(md_link, link_tuple):
     """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+    Test the basic extraction of information from markdown link
 
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+    The extraction should return (u'Name of link', u'http://www.example.test')
+    from [Name of link](http://www.example.test)
+    """
+    assert md2bibtex.extract(md_link) == link_tuple
 
 
 def test_command_line_interface():
